@@ -1,25 +1,85 @@
 import { NextRequest, NextResponse } from "next/server";
 
 /**
- * Route API pour tester l'accessibilité et la latence d'un serveur.
- * 
- * TODO pour tes prochains commits :
- * 1. Récupérer l'URL ou l'adresse IP depuis la requête (query param ou body)
- * 2. Mesurer le temps d'exécution avec `performance.now()`
- * 3. Effectuer un `fetch(url, { method: "HEAD", signal: AbortSignal.timeout(...) })`
- * 4. Renvoyer le statut ('online' | 'offline'), la latence (ms) et le statusCode HTTP
+ * Route API pour tester l'accessibilité et la latence d'un serveur distant.
+ * Supporte les domaines, adresses IP et URLs complètes.
  */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const targetUrl = searchParams.get("url") || "https://google.com";
+  const rawTarget = searchParams.get("url")?.trim() || "";
 
-  // Squelette de réponse en attendant ton implémentation :
-  return NextResponse.json({
-    message: "Endpoint de ping prêt à être implémenté !",
-    target: targetUrl,
-    status: "pending",
-    timestamp: new Date().toISOString(),
-    // TODO: retourne la vraie latence et le statut une fois le code écrit
-    latencyMs: null,
-  });
+  if (!rawTarget) {
+    return NextResponse.json(
+      { error: "Veuillez spécifier une cible (ex: ?url=google.com ou ?url=1.1.1.1)" },
+      { status: 400 }
+    );
+  }
+
+  // Nettoyage et normalisation de l'URL
+  let targetUrl = rawTarget;
+  if (!/^https?:\/\//i.test(targetUrl)) {
+    targetUrl = `https://${targetUrl}`;
+  }
+
+  const timeoutMs = parseInt(searchParams.get("timeout") || "4000", 10);
+  const startTime = performance.now();
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    let response: Response;
+
+    try {
+      // 1. Tente une requête HEAD légère
+      response = await fetch(targetUrl, {
+        method: "HEAD",
+        signal: controller.signal,
+        headers: { "User-Agent": "PulseBoard-Ping/1.0" },
+        cache: "no-store",
+      });
+    } catch (headErr: any) {
+      // 2. Si le HTTPS ou HEAD échoue (ex: IP sans certificat SSL), tente en GET ou HTTP
+      if (headErr.name !== "AbortError" && targetUrl.startsWith("https://") && !rawTarget.startsWith("https://")) {
+        const httpFallback = `http://${rawTarget}`;
+        response = await fetch(httpFallback, {
+          method: "GET",
+          signal: controller.signal,
+          headers: { "User-Agent": "PulseBoard-Ping/1.0" },
+          cache: "no-store",
+        });
+        targetUrl = httpFallback;
+      } else {
+        throw headErr;
+      }
+    } finally {
+      clearTimeout(timer);
+    }
+
+    const latencyMs = Math.round(performance.now() - startTime);
+    const status = latencyMs > 400 ? "slow" : "online";
+
+    return NextResponse.json({
+      target: rawTarget,
+      resolvedUrl: targetUrl,
+      status,
+      latencyMs,
+      statusCode: response.status,
+      statusText: response.statusText,
+      timestamp: new Date().toISOString(),
+      error: null,
+    });
+  } catch (err: any) {
+    const isTimeout = err.name === "AbortError" || err.message?.includes("aborted");
+
+    return NextResponse.json({
+      target: rawTarget,
+      resolvedUrl: targetUrl,
+      status: "offline",
+      latencyMs: null,
+      statusCode: null,
+      timestamp: new Date().toISOString(),
+      error: isTimeout ? `Délai d'attente dépassé (${timeoutMs}ms)` : (err.message || "Serveur injoignable"),
+    });
+  }
 }
