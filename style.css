@@ -1,148 +1,181 @@
+/* ============================================================
+   PROJET PING SERVEUR - NIVEAU BTS 1ÈRE ANNÉE
+   Fichier : style.css
+   Description : Feuille de styles simple et moderne
+   ============================================================ */
+
+/* Variables CSS pour centraliser les couleurs principales */
 :root {
-  --bg-color: #0a0a0a;
-  --card-bg: #141414;
-  --border-color: #262626;
-  --text-main: #ededed;
-  --text-muted: #888888;
-  --accent: #10b981;
-  --accent-hover: #059669;
-  --error: #ef4444;
+  --fond: #0f172a;        /* Fond sombre bleu nuit */
+  --carte: #1e293b;       /* Fond de la carte */
+  --bordure: #334155;     /* Couleur des bordures */
+  --texte: #f8fafc;       /* Texte blanc cassé */
+  --texte-secondaire: #94a3b8; /* Texte gris clair */
+  --vert: #10b981;        /* Couleur de succès (en ligne) */
+  --rouge: #ef4444;       /* Couleur d'erreur (hors ligne) */
 }
 
+/* Réinitialisation de base */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Style général du corps de la page */
 body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  font-family: system-ui, -apple-system, sans-serif;
-  padding: 2rem 1rem;
+  background-color: var(--fond);
+  color: var(--texte);
+  font-family: Arial, sans-serif;
+  padding: 30px 15px;
 }
 
+/* Conteneur pour limiter la largeur et centrer le contenu */
 .container {
   max-width: 600px;
   margin: 0 auto;
 }
 
+/* En-tête */
 .header {
-  margin-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 1rem;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--bordure);
+  padding-bottom: 15px;
 }
 
 .header h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 24px;
 }
 
 .header p {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
+  color: var(--texte-secondaire);
+  font-size: 14px;
+  margin-top: 5px;
 }
 
+/* Carte du widget */
 .card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.5rem;
+  background-color: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .card h2 {
-  font-size: 1.1rem;
+  font-size: 18px;
+  margin-bottom: 5px;
 }
 
 .card-desc {
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin-bottom: 1.25rem;
+  color: var(--texte-secondaire);
+  font-size: 13px;
+  margin-bottom: 20px;
 }
 
+/* Formulaire : champ de saisie et bouton */
 .ping-form {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .ping-form input {
   flex: 1;
-  background: #000;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.6rem 0.8rem;
-  color: var(--text-main);
-  font-size: 0.9rem;
+  background-color: #0f172a;
+  border: 1px solid var(--bordure);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--texte);
+  font-size: 14px;
 }
 
 .ping-form input:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--vert);
 }
 
 .ping-form button {
-  background: var(--accent);
+  background-color: var(--vert);
   color: #000;
   border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  font-weight: 600;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-weight: bold;
   cursor: pointer;
 }
 
 .ping-form button:hover {
-  background: var(--accent-hover);
+  background-color: #059669;
 }
 
+.ping-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Zone d'affichage du résultat */
 .result-box {
-  background: #000;
-  border: 1px solid var(--border-color);
+  background-color: #0f172a;
+  border: 1px solid var(--bordure);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
+/* Indicateur de statut (pastille + texte) */
 .status-indicator {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
+  gap: 8px;
+  font-size: 14px;
 }
 
+/* Pastille (ronde) */
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--text-muted);
+  background-color: var(--texte-secondaire);
 }
 
-.dot.online { background: var(--accent); }
-.dot.offline { background: var(--error); }
+.dot.online {
+  background-color: var(--vert);
+}
 
+.dot.offline {
+  background-color: var(--rouge);
+}
+
+/* Affichage du chiffre de latence en ms */
 .latency-display {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: bold;
   font-family: monospace;
 }
 
 .latency-display .unit {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-family: sans-serif;
+  font-size: 12px;
+  color: var(--texte-secondaire);
+  font-family: Arial, sans-serif;
 }
 
+/* Section Historique */
 .history-section h3 {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 0.5rem;
+  font-size: 14px;
+  color: var(--texte-secondaire);
+  margin-bottom: 10px;
 }
 
 #history-list {
   list-style: none;
-  font-size: 0.8rem;
+  font-size: 13px;
+}
+
+#history-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid #1e293b;
+  color: var(--texte-secondaire);
 }

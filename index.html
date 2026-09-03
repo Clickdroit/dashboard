@@ -3,56 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevPulse - Ping Serveur</title>
+  <title>DevPulse - Testeur de Disponibilité Serveur</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Conteneur principal centré -->
   <div class="container">
-    <!-- En-tête -->
+
+    <!-- En-tête de la page -->
     <header class="header">
       <h1>DevPulse</h1>
-      <p>Surveillance de serveur</p>
+      <p>Projet BTS SIO - Surveillance de serveur en temps réel</p>
     </header>
 
-    <!-- Widget : Ping Serveur -->
-    <main class="widget-grid">
+    <!-- Section principale contenant notre widget -->
+    <main>
       <section class="card">
         <h2>Surveillance Serveur</h2>
-        <p class="card-desc">Mesure la latence d'un serveur ou site web</p>
+        <p class="card-desc">Mesure le temps de réponse (latence) d'un site ou serveur</p>
 
-        <!-- Formulaire de test -->
+        <!-- Formulaire de saisie -->
         <div class="ping-form">
           <input 
             type="text" 
             id="url-input" 
-            placeholder="ex: https://google.com" 
+            placeholder="Entrez une URL (ex: https://google.com)" 
             value="https://google.com"
           >
-          <button id="ping-btn" type="button">Tester</button>
+          <button type="button" id="ping-btn">Tester</button>
         </div>
 
-        <!-- Résultat -->
-        <div id="result-box" class="result-box">
+        <!-- Boîte d'affichage du résultat -->
+        <div class="result-box">
           <div class="status-indicator">
             <span id="status-dot" class="dot"></span>
             <span id="status-text">En attente d'un test...</span>
           </div>
           <div class="latency-display">
-            <span id="latency-value">--</span> <span class="unit">ms</span>
+            <span id="latency-value">--</span>
+            <span class="unit">ms</span>
           </div>
         </div>
 
-        <!-- Zone pour ton futur historique (à coder par toi-même) -->
+        <!-- Section Historique (à compléter en TP/projet) -->
         <div class="history-section">
-          <h3>Historique récent</h3>
+          <h3>Historique des requêtes :</h3>
           <ul id="history-list">
-            <!-- À toi d'insérer les résultats précédents ici en JS ! -->
+            <!-- Les éléments <li> seront ajoutés ici en JavaScript -->
           </ul>
         </div>
       </section>
     </main>
+
   </div>
 
+  <!-- Inclusion du script JavaScript -->
   <script src="app.js"></script>
 </body>
 </html>
