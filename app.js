@@ -1,85 +1,58 @@
 /* ============================================================
-   PROJET PING SERVEUR - NIVEAU BTS 1ÈRE ANNÉE
-   Fichier : app.js
-   Description : Script pour tester l'accessibilité d'un serveur
+   PROJET : TESTEUR DE DISPONIBILITÉ SERVEUR (PING)
+   Niveau : BTS 1ère année
+   Objectif : Écris ton code sous chaque consigne ci-dessous.
    ============================================================ */
 
-// ------------------------------------------------------------
-// 1. RÉCUPÉRATION DES ÉLÉMENTS HTML DU DOM
-// ------------------------------------------------------------
-const inputUrl = document.getElementById("url-input");
-const btnTester = document.getElementById("ping-btn");
-const voyantStatut = document.getElementById("status-dot");
-const texteStatut = document.getElementById("status-text");
-const valeurLatence = document.getElementById("latency-value");
-const listeHistorique = document.getElementById("history-list");
 
-// ------------------------------------------------------------
-// 2. FONCTION POUR TESTER UN SERVEUR (PING)
-// ------------------------------------------------------------
+const urlInput = document.getElementById('url-input');
+const ping = document.getElementById('ping-btn');
+const statusDot = document.getElementById('status-dot');
+const statusText = document.getElementById('status-text');
+const latence = document.getElementById('latency-value');
+const listeHistory = document.getElementById('history-list');
+
+ping.addEventListener("click", FunPing)
+
+
+function FunPing(){
+  const url = urlInput.value.trim();
+  if(url === ""){
+    alert("Vous devez mettre une adresse pour pouvoir ping un serveur !") 
+    return false
+  }
+  testerServeur(url);
+} 
+
 async function testerServeur(url) {
-  console.log("Démarrage du test pour :", url);
-
-  // 2.1. Mettre à jour l'interface pour indiquer le chargement
-  texteStatut.textContent = "Test en cours...";
-  voyantStatut.className = "dot";
-  btnTester.disabled = true;
-
-  // 2.2. Enregistrer le moment de début (en millisecondes)
-  const tempsDebut = performance.now();
-
-  try {
-    // 2.3. Envoi d'une requête HTTP vers l'URL
-    // Note : 'no-cors' permet d'envoyer la requête sans être bloqué par le navigateur
-    await fetch(url, { mode: "no-cors", cache: "no-store" });
-
-    // 2.4. Calcul de la différence de temps
-    const tempsFin = performance.now();
-    const latence = Math.round(tempsFin - tempsDebut);
-
-    console.log("Réponse reçue ! Latence calculée :", latence, "ms");
-
-    // 2.5. Afficher les données sur la page
-    valeurLatence.textContent = latence;
-    texteStatut.textContent = "En ligne";
-    voyantStatut.className = "dot online"; // Pastille verte
-
-    // TODO (À toi de jouer) :
-    // Créer un nouvel élément <li> pour afficher ce test dans 'listeHistorique'
-
-  } catch (erreur) {
-    console.error("Erreur rencontrée lors du test :", erreur);
-
-    // En cas d'échec (serveur éteint, adresse introuvable, etc.)
-    valeurLatence.textContent = "--";
-    texteStatut.textContent = "Injoignable ou erreur";
-    voyantStatut.className = "dot offline"; // Pastille rouge
-
-  } finally {
-    // 2.6. Réactiver le bouton une fois le test fini
-    btnTester.disabled = false;
+  statusText.textContent = "Test en cours ..."
+  statusDot.className ="dot";
+  ping.disabled = true;
+  const debut = performance.now();
+  try{
+    await fetch(url, {mode: "no-cors", cache: "no-store"});
+    const fin = performance.now();
+    const l = Math.round(fin - debut);
+    latence.textContent = l;
+    statusText.textContent = "En ligne";
+    statusDot.className="dot online";
+  }catch(e){
+    latence.textContent = "--";
+    statusText.textContent = "Injoignable ou erreur";
+    statusDot.className="dot offline"
+  }
+  finally{
+    ping.disabled = false;
   }
 }
 
-// ------------------------------------------------------------
-// 3. ÉCOUTEURS D'ÉVÉNEMENTS (INTERACTIONS UTILISATEUR)
-// ------------------------------------------------------------
 
-// Clic sur le bouton "Tester"
-btnTester.addEventListener("click", function () {
-  const urlSaisie = inputUrl.value.trim();
 
-  // Vérification simple : le champ n'est pas vide
-  if (urlSaisie === "") {
-    alert("Veuillez saisir une URL avant de lancer le test !");
-    return;
-  }
-
-  // Lancement du test
-  testerServeur(urlSaisie);
-});
-
-// TODO (Idées d'exercices à implémenter toi-même) :
-// 1. Déclencher le test quand on appuie sur la touche "Entrée" dans le champ input
-// 2. Ajouter un système de rafraîchissement automatique toutes les 10 secondes avec setInterval()
-// 3. Sauvegarder les derniers résultats dans le localStorage du navigateur
+// ============================================================
+// ÉTAPE 4 (BONUS POUR ALLER PLUS LOIN) :
+// ============================================================
+// Une fois que les étapes 1, 2 et 3 fonctionnent :
+//  - Confort utilisateur : si l'adresse ne commence ni par "http://" ni par "https://", rajouter "https://" automatiquement au début (ex: avec .startsWith()).
+//  - Ajouter chaque résultat dans la liste d'historique (document.createElement("li")).
+//  - Lancer aussi le test quand l'utilisateur appuie sur la touche "Entrée" (événement keydown sur l'input).
+//  - Ajouter un bouton pour tester automatiquement toutes les 10 secondes (setInterval).
