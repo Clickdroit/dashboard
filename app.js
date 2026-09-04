@@ -16,10 +16,13 @@ ping.addEventListener("click", FunPing)
 
 
 function FunPing(){
-  const url = urlInput.value.trim().startsWith("https://" || "http://");
+  let url = urlInput.value.trim();
   if(url === ""){
     alert("Vous devez mettre une adresse pour pouvoir ping un serveur !") 
     return false
+  }
+  if(!url.startsWith("http://") && !url.startsWith("https://")){
+    url = "https://" + url;
   }
   testerServeur(url);
 } 
