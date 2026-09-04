@@ -16,7 +16,7 @@ ping.addEventListener("click", FunPing)
 
 
 function FunPing(){
-  const url = urlInput.value.trim();
+  const url = urlInput.value.trim().startsWith("https://" || "http://");
   if(url === ""){
     alert("Vous devez mettre une adresse pour pouvoir ping un serveur !") 
     return false
