@@ -45,6 +45,7 @@ async function testerServeur(url) {
     statusDot.className="dot offline"
   }
   finally{
+    document.createElement("li")
     ping.disabled = false;
   }
 }
@@ -55,7 +56,6 @@ async function testerServeur(url) {
 // ÉTAPE 4 (BONUS POUR ALLER PLUS LOIN) :
 // ============================================================
 // Une fois que les étapes 1, 2 et 3 fonctionnent :
-//  - Confort utilisateur : si l'adresse ne commence ni par "http://" ni par "https://", rajouter "https://" automatiquement au début (ex: avec .startsWith()).
 //  - Ajouter chaque résultat dans la liste d'historique (document.createElement("li")).
 //  - Lancer aussi le test quand l'utilisateur appuie sur la touche "Entrée" (événement keydown sur l'input).
 //  - Ajouter un bouton pour tester automatiquement toutes les 10 secondes (setInterval).
