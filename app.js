@@ -45,7 +45,9 @@ async function testerServeur(url) {
     statusDot.className="dot offline"
   }
   finally{
-    document.createElement("li")
+    const historiqueItem = document.createElement("li");
+    historiqueItem.textContent = `${new Date().toLocaleTimeString()} - ${url} : ${statusText.textContent} (${latence.textContent} ms)`;
+    listeHistory.appendChild(historiqueItem);
     ping.disabled = false;
   }
 }
