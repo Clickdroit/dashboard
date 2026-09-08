@@ -51,6 +51,10 @@ async function testerServeur(url) {
     ping.disabled = false;
   }
 }
+document.addEventListener('keydown', (event) => {
+if(event.key === 'Enter'){
+  FunPing();
+}});
 
 
 
