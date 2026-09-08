@@ -11,9 +11,10 @@ const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
 const latence = document.getElementById('latency-value');
 const listeHistory = document.getElementById('history-list');
+const auto = document.getElementById('automatique-btn');
 
-ping.addEventListener("click", FunPing)
-
+ping.addEventListener("click", FunPing);
+auto.addEventListener("click", TestAuto);
 
 function FunPing(){
   let url = urlInput.value.trim();
@@ -55,6 +56,15 @@ document.addEventListener('keydown', (event) => {
 if(event.key === 'Enter'){
   FunPing();
 }});
+
+let intervalid = null;
+function TestAuto(){
+  if(!intervalid) {
+    FunPing();
+    intervalid = setInterval(FunPing, 10000);
+  }
+}
+//
 
 
 
