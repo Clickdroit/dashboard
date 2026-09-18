@@ -15,3 +15,14 @@ Aucune installation ni dépendance requise !
 - `index.html` : Structure de la page et des widgets.
 - `style.css` : Styles et mise en page (thème sombre).
 - `app.js` : Logique de ping, calcul de latence et gestion des événements.
+
+## Ce que mesure le test
+
+Le navigateur mesure le temps écoulé autour d'une requête HTTP avec `fetch`.
+Ce résultat n'est pas un ping ICMP : il peut inclure la résolution DNS,
+la connexion et le traitement de la requête.
+
+Le mode `no-cors` fournit une réponse opaque : le script ne peut pas lire
+le code HTTP. Le statut « En ligne » indique que `fetch` a abouti ; il ne
+garantit pas que la page a renvoyé un succès HTTP. Une erreur peut aussi
+venir du réseau ou d'une restriction du navigateur.
